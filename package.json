@@ -1,7 +1,7 @@
 {
   "name": "@wickr-sample-integrations/gemini-chatbot",
   "version": "1.0.0",
-  "description": "WickrIO Gemini AI Chatbot Integrationp",
+  "description": "WickrIO Gemini AI Chatbot Integration",
   "main": "gemini-chatbot.js",
   "dependencies": {
     "prompt": "^1.3.0",
@@ -10,8 +10,8 @@
   },
   "scripts": {
     "start": "forever start -m 5 ./forever.json",
-    "stop": "forever stop wickrio-example-app",
-    "restart": "forever restart wickrio-example-app"
+    "stop": "forever stop gemini-chatbot",
+    "restart": "forever restart gemini-chatbot"
   },
   "repository": {
     "type": "git",
@@ -22,11 +22,9 @@
     "wickrio",
     "wickrbot",
     "bot",
-    "bots",
-    "secure",
-    "messaging",
-    "api",
-    "wickrsampleintegrations"
+    "gemini",
+    "ai",
+    "chatbot"
   ],
   "database": true
 }
