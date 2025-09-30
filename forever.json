@@ -1,9 +1,9 @@
 {
-  "uid": "wickrio-example-app",
+  "uid": "gemini-chatbot",
   "append": true,
   "watch": false,
-  "script": "./example-app.js",
-  "sourceDir": "",
+  "script": "gemini-chatbot.js",
+  "sourceDir": "/opt/WickrIO/clients/gemini-chatbot",
   "logFile": "./log.output",
   "outFile": "./outfile.output",
   "errFile": "./err.output"

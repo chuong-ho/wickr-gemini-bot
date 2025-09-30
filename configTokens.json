@@ -1,6 +1,12 @@
 {
     "supportAdministrators":false,
     "supportVerification":false,
-    "integration":"WickrIO-Example-App",
-    "tokens":[]
+    "integration":"Gemini-Chatbot",
+    "tokens":[
+        {
+            "type": "string",
+            "key": "GEMINI_API_KEY",
+            "description": "Google Gemini API Key"
+        }
+    ]
 }
