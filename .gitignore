@@ -1,0 +1,15 @@
+#ignore git files
+.git
+
+# Ignore build output directories
+bin/
+build/
+target/
+
+# Ignore log files
+*.log
+logs/
+
+# Ignore operating system generated files
+.DS_Store # macOS
+Thumbs.db # Windows
