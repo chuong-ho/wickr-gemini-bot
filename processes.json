@@ -12,6 +12,14 @@
       "ignore_watch": [
         ".git"
       ],
+      "env": {
+        "tokens": {
+          "BOT_USERNAME": {
+            "value": "gemini-bot",
+            "encrypted": false
+          }
+        }
+      },
       "out_file": "log.output",
       "error_file": "err.output"
     }
