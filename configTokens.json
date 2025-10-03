@@ -1,12 +1,6 @@
 {
     "supportAdministrators":false,
     "supportVerification":false,
-    "integration":"Gemini-Chatbot",
-    "tokens":[
-        {
-            "type": "string",
-            "key": "GEMINI_API_KEY",
-            "description": "Google Gemini API Key"
-        }
-    ]
+    "integration":"wickr-gemini-chatbot",
+    "tokens":[]
 }

@@ -142,8 +142,10 @@ async function inputTokens() {
       };
       newObjectResult[key] = obj;
     }
-    for (var key in dataParsed.apps[0].env.tokens) {
-      delete dataParsed.apps[0].env.tokens[key];
+    if (dataParsed.apps[0].env && dataParsed.apps[0].env.tokens) {
+      for (var key in dataParsed.apps[0].env.tokens) {
+        delete dataParsed.apps[0].env.tokens[key];
+      }
     }
     try {
       var cp = execSync('cp processes.json processes_backup.json');
