@@ -1,6 +1,6 @@
 {
   "name": "wickr-gemini-chatbot",
-  "version": "6.48.2",
+  "version": "1.0.0",
   "description": "WickrIO Gemini Chatbot - AI-powered chat integration",
   "main": "gemini-chatbot.js",
   "dependencies": {
