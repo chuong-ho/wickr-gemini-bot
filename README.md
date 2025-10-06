@@ -15,7 +15,6 @@ To get started, you would need to setup your system, download and install Docker
 This software is distributed under the [Apache License, version 2.0](https://www.apache.org/licenses/LICENSE-2.0.html)
 
 ```
-   Copyright 2021 Wickr, Inc.
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

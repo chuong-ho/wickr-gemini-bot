@@ -4,6 +4,8 @@
   "watch": false,
   "script": "./gemini-chatbot.js",
   "sourceDir": "",
+  "minUptime": 2000,
+  "spinSleepTime": 1000,
   "logFile": "./log.output",
   "outFile": "./outfile.output",
   "errFile": "./err.output"

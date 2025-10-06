@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const fetch = require('node-fetch');
 const { SecretsManagerClient, GetSecretValueCommand } = require('@aws-sdk/client-secrets-manager');
+const { WickrLogger } = require('./logger');
 
 const WickrIOAPI = require('wickrio_addon');
 const WickrIOBotAPI = require('wickrio-bot-api');
@@ -9,44 +10,46 @@ const WickrUser = WickrIOBotAPI.WickrUser;
 const bot = new WickrIOBotAPI.WickrIOBot();
 const apiService = bot.apiService();
 
-// Function to get Gemini API key from AWS Secrets Manager
-async function getGeminiApiKey() {
-  console.log('[SECRETS] Initializing Secrets Manager client...');
-  const client = new SecretsManagerClient({ region: process.env.AWS_REGION || 'us-east-1' });
-  
-  try {
-    console.log('[SECRETS] Requesting secret: gemini_pro_api_key');
-    const command = new GetSecretValueCommand({
-      SecretId: 'gemini_pro_api_key'
-    });
-    
-    console.log('[SECRETS] Sending request to AWS Secrets Manager...');
-    const response = await client.send(command);
-    console.log('[SECRETS] Successfully retrieved secret from AWS');
-    
-    const secret = JSON.parse(response.SecretString);
-    console.log('[SECRETS] Secret parsed successfully');
-    return secret.api_key || secret.GEMINI_API_KEY || response.SecretString;
-  } catch (error) {
-    console.error('[SECRETS] Error retrieving Gemini API key from Secrets Manager:', error);
-    throw error;
-  }
-}
-
 var bot_username
 var output_filename
 var gemini_api_key // Global variable to store the API key
 
+// Function to get Gemini API key from AWS Secrets Manager
+async function getGeminiApiKey() {
+  WickrLogger.info('[SECRETS] Initializing Secrets Manager client...');
+  const client = new SecretsManagerClient({ region: process.env.AWS_REGION || 'us-east-1' });
+  
+  try {
+    WickrLogger.info('[SECRETS] Requesting secret: gemini_pro_api_key');
+    const command = new GetSecretValueCommand({
+      SecretId: 'gemini_pro_api_key'
+    });
+    
+    WickrLogger.info('[SECRETS] Sending request to AWS Secrets Manager...');
+    const response = await client.send(command);
+    WickrLogger.info('[SECRETS] Successfully retrieved secret from AWS');
+    
+    const secret = JSON.parse(response.SecretString);
+    WickrLogger.info('[SECRETS] Secret parsed successfully');
+    return secret.api_key || secret.GEMINI_API_KEY || response.SecretString;
+  } catch (error) {
+    WickrLogger.error('[SECRETS] Error retrieving Gemini API key from Secrets Manager:', error);
+    throw error;
+  }
+}
+
+
+
 // Function to call Google Gemini Pro API
 async function callGeminiAPI(prompt) {
-  console.log('[GEMINI] Starting API call with prompt length:', prompt.length);
+  WickrLogger.info('[GEMINI] Starting API call with prompt length:', prompt.length);
   
   if (!gemini_api_key) {
-    console.error('[GEMINI] API key not available');
+    WickrLogger.error('[GEMINI] API key not available');
     throw new Error('Gemini API key not available');
   }
 
-  console.log('[GEMINI] API key available, making request to Gemini Pro...');
+  WickrLogger.info('[GEMINI] API key available, making request to Gemini Pro...');
   const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${gemini_api_key}`, {
     method: 'POST',
     headers: {
@@ -61,16 +64,16 @@ async function callGeminiAPI(prompt) {
     })
   });
 
-  console.log('[GEMINI] Response status:', response.status);
+  WickrLogger.info('[GEMINI] Response status:', response.status);
   
   if (!response.ok) {
-    console.error('[GEMINI] API error - Status:', response.status, 'StatusText:', response.statusText);
+    WickrLogger.error('[GEMINI] API error - Status:', response.status, 'StatusText:', response.statusText);
     throw new Error(`Gemini API error: ${response.status}`);
   }
 
-  console.log('[GEMINI] Parsing response...');
+  WickrLogger.info('[GEMINI] Parsing response...');
   const data = await response.json();
-  console.log('[GEMINI] Response received, length:', data.candidates[0].content.parts[0].text.length);
+  WickrLogger.info('[GEMINI] Response received, length:', data.candidates[0].content.parts[0].text.length);
   return data.candidates[0].content.parts[0].text;
 }
 
@@ -93,6 +96,8 @@ async function exitHandler(options, err) {
     console.log(err);
   }
 }
+
+//Start of our main function
 
 //catches ctrl+c and stop.sh events
 process.on('SIGINT', exitHandler.bind(null, {
