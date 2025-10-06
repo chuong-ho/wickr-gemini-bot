@@ -120,36 +120,36 @@ process.on('uncaughtException', exitHandler.bind(null, {
 async function main() {
   try {
     // Get Gemini API key from AWS Secrets Manager
-    console.log("[STARTUP] Retrieving Gemini API key from Secrets Manager...");
+    WickrLogger.info("[STARTUP] Retrieving Gemini API key from Secrets Manager...");
     gemini_api_key = await getGeminiApiKey();
-    console.log("[STARTUP] Gemini API key retrieved successfully");
+    WickrLogger.info("[STARTUP] Gemini API key retrieved successfully");
 
-    console.log("[STARTUP] Processing environment configuration...");
+    WickrLogger.info("[STARTUP] Processing environment configuration...");
     bot.processesJsonToProcessEnv()
     var tokens = JSON.parse(process.env.tokens);
     var status;
     if (process.argv[2] === undefined) {
       if (tokens.BOT_USERNAME !== undefined) {
         bot_username = tokens.BOT_USERNAME.value;
-        console.log("[STARTUP] Bot username from tokens:", bot_username);
+        WickrLogger.info("[STARTUP] Bot username from tokens:", bot_username);
       } else if (tokens.WICKRIO_BOT_NAME !== undefined) {
         bot_username = tokens.WICKRIO_BOT_NAME.value
-        console.log("[STARTUP] Bot username from WICKRIO_BOT_NAME:", bot_username);
+        WickrLogger.info("[STARTUP] Bot username from WICKRIO_BOT_NAME:", bot_username);
       } else {
-        console.error("[STARTUP] Client username not found in tokens!");
+        WickrLogger.error("[STARTUP] Client username not found in tokens!");
         exitHandler(null, {
           exit: true,
           reason: 'Client username not found!'
         });
       }
-      console.log("[STARTUP] Starting bot with username:", bot_username);
+      WickrLogger.info("[STARTUP] Starting bot with username:", bot_username);
       status = await bot.start(bot_username)
     } else {
-      console.log("[STARTUP] Starting bot with command line argument:", process.argv[2]);
+      WickrLogger.info("[STARTUP] Starting bot with command line argument:", process.argv[2]);
       status = await bot.start(process.argv[2])
     }
     if (!status) {
-      console.error("[STARTUP] Bot failed to start");
+      WickrLogger.error("[STARTUP] Bot failed to start");
       exitHandler(null, {
         exit: true,
         reason: 'Client not able to start'
@@ -158,11 +158,11 @@ async function main() {
 
     // The following call passes a callback function to the bot API. 
     // The listen function will be called for each message received.
-    console.log("[STARTUP] Bot started successfully, beginning to listen for messages...")
+    WickrLogger.info("[STARTUP] Bot started successfully, beginning to listen for messages...")
     await bot.startListening(listen);
 
   } catch (err) {
-    console.log(err);
+    WickrLogger.error(err);
   }
 }
 
@@ -1793,7 +1793,7 @@ async function listen(message) {
     if (!parsedMessage) {
       return;
     }
-    console.log('New incoming Message:', parsedMessage);
+    WickrLogger.info('New incoming Message:', parsedMessage);
     var wickrUser;
     var command = parsedMessage.command;
     var message = parsedMessage.message;
@@ -1818,10 +1818,10 @@ async function listen(message) {
       });
       //Add a new user to the database
       var user = bot.addUser(wickrUser);
-      console.log('Added user:', user);
+      WickrLogger.info('Added user:', user);
       user.token = "example_token_A1234";
       //Print the changed user object
-      console.log(bot.getUser(userEmail));
+      WickrLogger.info(bot.getUser(userEmail));
     }
 
 
@@ -1833,25 +1833,25 @@ async function listen(message) {
      * Sends the user's prompt to Google Gemini Pro and returns the response
      */
     if (command === '/gemini') {
-      console.log('[MESSAGE] Processing /gemini command from user:', userEmail);
+      WickrLogger.info('[MESSAGE] Processing /gemini command from user:', userEmail);
       if (!argument || argument.trim() === '') {
-        console.log('[MESSAGE] No argument provided for /gemini command');
+        WickrLogger.info('[MESSAGE] No argument provided for /gemini command');
         const reply = 'Please provide a prompt. Usage: /gemini <your question>';
         var sMessage = WickrIOAPI.cmdSendRoomMessage(vGroupID, reply);
         return;
       }
 
       try {
-        console.log('[MESSAGE] Sending processing message to user');
+        WickrLogger.info('[MESSAGE] Sending processing message to user');
         const reply = 'Processing your request with Gemini Pro...';
         var sMessage = WickrIOAPI.cmdSendRoomMessage(vGroupID, reply);
         
-        console.log('[MESSAGE] Calling Gemini API with prompt:', argument.substring(0, 50) + '...');
+        WickrLogger.info('[MESSAGE] Calling Gemini API with prompt:', argument.substring(0, 50) + '...');
         const geminiResponse = await callGeminiAPI(argument);
-        console.log('[MESSAGE] Received response from Gemini, sending to user');
+        WickrLogger.info('[MESSAGE] Received response from Gemini, sending to user');
         var sMessage = WickrIOAPI.cmdSendRoomMessage(vGroupID, geminiResponse);
       } catch (error) {
-        console.error('[MESSAGE] Gemini API error:', error);
+        WickrLogger.error('[MESSAGE] Gemini API error:', error);
         const errorReply = 'Sorry, I encountered an error processing your request with Gemini Pro.';
         var sMessage = WickrIOAPI.cmdSendRoomMessage(vGroupID, errorReply);
       }
@@ -2159,26 +2159,26 @@ async function listen(message) {
     else {
       // If message doesn't start with '/', treat as Gemini prompt
       if (message && message.trim() !== '') {
-        console.log('[MESSAGE] Processing direct message from user:', userEmail);
-        console.log('[MESSAGE] Message preview:', message.substring(0, 50) + '...');
+        WickrLogger.info('[MESSAGE] Processing direct message from user:', userEmail);
+        WickrLogger.info('[MESSAGE] Message preview:', message.substring(0, 50) + '...');
         try {
-          console.log('[MESSAGE] Sending processing message to user');
+          WickrLogger.info('[MESSAGE] Sending processing message to user');
           const reply = 'Processing your request with Gemini Pro...';
           var sMessage = WickrIOAPI.cmdSendRoomMessage(vGroupID, reply);
           
-          console.log('[MESSAGE] Calling Gemini API with direct message');
+          WickrLogger.info('[MESSAGE] Calling Gemini API with direct message');
           const geminiResponse = await callGeminiAPI(message);
-          console.log('[MESSAGE] Received response from Gemini, sending to user');
+          WickrLogger.info('[MESSAGE] Received response from Gemini, sending to user');
           var sMessage = WickrIOAPI.cmdSendRoomMessage(vGroupID, geminiResponse);
         } catch (error) {
-          console.error('[MESSAGE] Gemini API error for direct message:', error);
+          WickrLogger.error('[MESSAGE] Gemini API error for direct message:', error);
           const errorReply = 'Sorry, I encountered an error processing your request.';
           var sMessage = WickrIOAPI.cmdSendRoomMessage(vGroupID, errorReply);
         }
       }
     }
   } catch (err) {
-    console.log(err);
+    WickrLogger.error(err);
   }
 }
 
