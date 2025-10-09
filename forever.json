@@ -1,9 +1,11 @@
 {
-  "uid": "wickrio-example-app",
+  "uid": "wickr-gemini-chatbot",
   "append": true,
   "watch": false,
-  "script": "./example-app.js",
-  "sourceDir": "",
+  "script": "./index.js",
+  "sourceDir": "./",
+  "minUptime": 2000,
+  "spinSleepTime": 1000,
   "logFile": "./log.output",
   "outFile": "./outfile.output",
   "errFile": "./err.output"

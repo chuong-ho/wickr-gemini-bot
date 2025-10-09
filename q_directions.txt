@@ -1,0 +1,9 @@
+Goal: 
+  - create a wickrIO chatbot that takes conversations with the users in a Wickr chat window
+  - turns user questions into a prompt
+  - send prompt to Google Gemini Pro (using an api key)
+  - gets the response from gemini and sends it back to the user in the chat window
+
+Additional Requirements
+  - Need to implement logging function as wickerlogger from the jogger.js file. For all logging use module.exports = { WickrLogger: logger }
+  

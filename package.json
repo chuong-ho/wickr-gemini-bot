@@ -1,31 +1,33 @@
 {
-  "name": "@wickr-sample-integrations/wickrio-example-app",
-  "version": "6.48.2",
-  "description": "WickrIO Node.js API example app",
-  "main": "example-app.js",
+  "name": "wickr-gemini-chatbot",
+  "version": "1.0.0",
+  "description": "WickrIO Gemini Chatbot - AI-powered chat integration",
+  "main": "index.js",
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@aws-sdk/client-secrets-manager": "^3.0.0",
+    "node-fetch": "^2.6.7",
     "prompt": "^1.3.0",
-    "wickrio-bot-api": "7.1.x"
+    "wickrio-bot-api": "7.1.x",
+    "winston": "^3.8.0"
   },
   "scripts": {
     "start": "forever start -m 5 ./forever.json",
-    "stop": "forever stop wickrio-example-app",
-    "restart": "forever restart wickrio-example-app"
+    "stop": "forever stop wickr-gemini-chatbot",
+    "restart": "forever restart wickr-gemini-chatbot"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/WickrInc/wickrio-example-app"
+    "url": "https://github.com/chuong-ho/wickr-gemini-bot"
   },
   "keywords": [
     "wickr",
     "wickrio",
     "wickrbot",
     "bot",
-    "bots",
-    "secure",
-    "messaging",
-    "api",
-    "wickrsampleintegrations"
+    "gemini",
+    "ai",
+    "chatbot"
   ],
   "database": true
 }

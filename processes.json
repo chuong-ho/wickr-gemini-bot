@@ -1,9 +1,9 @@
 {
   "apps": [
     {
-      "name": "WickrIO-Example-App_gemini-bot",
+      "name": "wickr-gemini-chatbot",
       "args": [],
-      "script": "node example-app.js",
+      "script": "node index.js",
       "exec_interpreter": "none",
       "autorestart": false,
       "watch": [
@@ -18,7 +18,12 @@
             "value": "gemini-bot",
             "encrypted": false
           }
-        }
+        },
+        "log_tokens": {
+            "LOG_LEVEL": "debug",
+            "LOG_FILE_SIZE": "10m",
+            "LOG_MAX_FILES": "5"
+          }
       },
       "out_file": "log.output",
       "error_file": "err.output"
