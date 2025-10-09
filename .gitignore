@@ -1,6 +1,9 @@
 #ignore git files
 .git
 
+#ignore example
+aws-samples-wickr-bedrock/
+
 # Ignore build output directories
 bin/
 build/
@@ -9,6 +12,9 @@ target/
 # Ignore log files
 *.log
 logs/
+
+#Ignore node
+node_modules/
 
 # Ignore operating system generated files
 .DS_Store # macOS
